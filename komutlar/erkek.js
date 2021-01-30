@@ -1,48 +1,42 @@
-const Discord = require('discord.js');
-
+const Discord = require("discord.js");
+const db = require("quick.db");
 exports.run = async (client, message, args) => {
-  
-  
- if(!message.member.roles.cache.has('762306051336437800')) return message.channel.send('Bu kodu kullanmak için yeterli yetkin yok!')
-  
-  let member = message.mentions.members.first();
-  let isim = args[1]
-  let yaş = args[2]
-  let al = "762306275916644372"; ///alınacak rol idsi
-  let ver = "762306051999531068"; ///verilecek rol idsi
-  if (!member) return message.channel.send("Bir Kullanıcı Etiketle");
-  if (!isim) return message.channel.send("Bir İsim Girmelisin!");
-  member.setNickname(`${isim}  [${yaş}]`);
-  
-    member.roles.add(ver);
-    member.roles.remove(al);
-  
 
-  const embed = new Discord.MessageEmbed()
-    .setColor("BLUE")
-    .setTitle(":butterfly: Kayıt işlemi başarılı :butterfly:")
-    .setImage("https://media.tenor.com/images/5a8496cf0faf284d514a8cedc3f7332d/tenor.gif")
-    .setDescription(`
-**Kayıt Edilen Kullanıcı** : ${member.user.username}
-**Kayıt Eden Yetkili** : ${message.author.username}
+    let embed1 = new Discord.MessageEmbed()
+    .setColor("RANDOM")
+    .setAuthor("Uyarı !")
+    .setDescription("Bu Komutu Kullanmaya Yetkin Yok")
+      if(!message.member.roles.cache.has("762306051336437800")) return message.channel.send(embed1);
 
-**Kayıt İşleminde Verilen Rol** : 
-<@&762306051999531068>
+   let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
+ 
 
-**Kayıt İşleminde Alınan Rol** :
-<@&762306275916644372>
-`)
-message.channel.send(embed)
-};
+let isim  =  args[1]
+let yaş =  args[2]
 
+if(!user) return message.channel.send(`Lütfen geçerli bir kullanıcı veya ID belirt.`)
+  
+ await user.setNickname(`Lütfen Bekleyiniz.`)
+  user.roles.add("762306051999531068")
+  user.roles.remove("762306275916644372")
+  
+  message.react('✅')
+  
+  setTimeout(() => {
+    user.setNickname(`${isim} • ${yaş}`)
+  },5000)
+
+
+}
+ 
 exports.conf = {
   enabled: true,
-  guildOnly: true,
-  aliases: ["erkek" , "e"],
+  guildOnly: false,
+  aliases: [],
   permLevel: 0
-}
+};
+ 
 exports.help = {
-  name: 'Erkek',
-  description: "Erkek Kayıt Sıstemı",
-  usage: 'Erkek isim yaş'
-}
+  name: "erkek",
+  description: "v12 erkek kayıt."
+};
